@@ -53,3 +53,46 @@ export async function fetchSpotifyProfile(accessToken: string) {
     return res.json();
 }
 
+export async function validateSpotifyToken(accessToken: string, refreshToken: string) {
+  const clientId = process.env.SPOTIFY_CLIENT_ID!;
+  const clientSecret = process.env.SPOTIFY_CLIENT_SECRET!;
+  
+  const response = await fetch('https://api.spotify.com/v1/me', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (response.status === 401) {
+    const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+      },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      }).toString(),
+    });
+
+    if (!tokenResponse.ok) {
+      console.error('Error refreshing token');
+      throw new Error('Failed to refresh access token');
+    }
+
+    const newTokenData = await tokenResponse.json();
+    const { access_token: newAccessToken, expires_in } = newTokenData;
+
+    const newExpirationTime = Date.now() + expires_in * 1000;
+
+    return {
+      accessToken: newAccessToken,
+      expirationTime: newExpirationTime,
+    };
+  }
+
+  return { accessToken, expirationTime: null };
+}
+
+
