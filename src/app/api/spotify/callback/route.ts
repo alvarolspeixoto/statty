@@ -33,21 +33,25 @@ export async function GET(req: NextRequest) {
     }
 
     const data = await response.json();
-    const { access_token, refresh_token } = data;
+    const { access_token, refresh_token, expires_in } = data;
+
+    const expirationTime = Date.now() + expires_in * 1000;
 
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV! === 'production',
       maxAge: 60 * 60 * 24 * 30, // 30 dias
-      path: '/', // Disponível em todo o domínio
+      path: '/',
     };
 
     const accessTokenCookie = cookie.serialize('access_token', access_token, cookieOptions);
     const refreshTokenCookie = cookie.serialize('refresh_token', refresh_token, cookieOptions);
+    const expirationCookie = cookie.serialize('token_expiration', expirationTime.toString(), cookieOptions);
 
     const responseWithCookies = NextResponse.redirect(process.env.NEXT_PUBLIC_BASE_URL + '/');
     responseWithCookies.headers.append('Set-Cookie', accessTokenCookie);
     responseWithCookies.headers.append('Set-Cookie', refreshTokenCookie);
+    responseWithCookies.headers.append('Set-Cookie', expirationCookie);
 
     return responseWithCookies;
 
