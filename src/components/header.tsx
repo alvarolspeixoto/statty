@@ -46,7 +46,7 @@ export default async function Header() {
                 profileData ? (
                     <ProfileButton displayName={profileData.display_name} photoURL={profileData.images[0].url} />
                 ) : (
-                    <Link className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded" href="/api/spotify/login">
+                    <Link className="bg-green-500 shadow-lg shadow-green-500/50 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-colors duration-300" href="/api/spotify/login">
                         Login with Spotify
                     </Link>
                 )
