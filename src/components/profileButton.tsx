@@ -4,9 +4,10 @@ import Link from "next/link";
 interface ProfileProps {
     displayName: string;
     photoURL: string;
+    onLogout: () => void;
 }
 
-export default function ProfileButton({ displayName, photoURL }: ProfileProps) {
+export default function ProfileButton({ displayName, photoURL, onLogout }: ProfileProps) {
     return (
         <div className="relative flex items-center gap-2 group cursor-pointer">
             <span>{displayName}</span>
@@ -21,9 +22,12 @@ export default function ProfileButton({ displayName, photoURL }: ProfileProps) {
                 <Link href="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
                     See profile
                 </Link>
-                <Link href="/api/spotify/logout" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                <button 
+                    onClick={onLogout}
+                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                >
                     Logout
-                </Link>
+                </button>
             </div>
         </div>
     );

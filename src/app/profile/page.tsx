@@ -18,7 +18,7 @@ const ProfilePage = async () => {
     try {
         [profileInfo, favoriteArtists] = await Promise.all([
             fetchSpotifyProfile(accessToken),
-            fetchSpotifyData('me/top/artists?limit=5', accessToken)
+            fetchSpotifyData('me/top/artists?limit=5&time_range=long_term', accessToken)
         ]);
     } catch (error) {
         console.error('Error fetching data from Spotify:', error);
@@ -28,7 +28,6 @@ const ProfilePage = async () => {
     let photoURL = profileInfo.images[1].url;
     let displayName = profileInfo.display_name;
     let spotifyProfileURI = profileInfo.external_urls.spotify;
-    console.error(profileInfo)
     return (
         <div >
             <div className="flex justify-between p-4 bg-gradient-to-r from-white to-gray-300">
