@@ -1,6 +1,7 @@
 // headerClient.tsx (Client Component)
 "use client";
 
+import Image from "next/image";
 import ProfileButton from "./profileButton";
 import Link from "next/link";
 
@@ -25,7 +26,7 @@ export default function HeaderClient({ profileData }: HeaderClientProps) {
 
   return (
     <header className="flex justify-between items-center py-4 px-7 border-b">
-      <nav>
+      <nav className="min-w-[200px]">
         <ul className="flex gap-x-5">
           <li>
             <a href="/">Home</a>
@@ -35,22 +36,26 @@ export default function HeaderClient({ profileData }: HeaderClientProps) {
           </li>
         </ul>
       </nav>
-      <h2 className="text-3xl font-bold">Statty</h2>
-
-      {profileData ? (
-        <ProfileButton
-          displayName={profileData.display_name}
-          photoURL={profileData.images[0]?.url}
-          onLogout={handleLogout}
-        />
-      ) : (
-        <Link
-          className="bg-green-500 shadow-lg shadow-green-500/50 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-colors duration-300"
-          href="/api/spotify/login"
-        >
-          Login with Spotify
-        </Link>
-      )}
+      <div className="flex items-center min-w-[200px] justify-center">
+        <Image src="/images/statty.png" alt="Statty Logo" width={50} height={50} />
+        <h2 className="text-3xl font-bold">Statty</h2>
+      </div>
+    <div className="min-w-[200px] flex justify-end">
+        {profileData ? (
+          <ProfileButton
+            displayName={profileData.display_name}
+            photoURL={profileData.images[0]?.url}
+            onLogout={handleLogout}
+          />
+        ) : (
+          <Link
+            className="bg-green-500 shadow-lg shadow-green-500/50 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-colors duration-300"
+            href="/api/spotify/login"
+          >
+            Login with Spotify
+          </Link>
+        )}
+      </div>
     </header>
   );
 }
