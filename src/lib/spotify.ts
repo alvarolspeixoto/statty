@@ -94,5 +94,3 @@ export async function validateSpotifyToken(accessToken: string, refreshToken: st
 
   return { accessToken, expirationTime: null };
 }
-
-

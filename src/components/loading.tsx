@@ -1,9 +1,11 @@
-// loading.tsx
-export default function Loading() {
-    return (
-      <div className="animate-pulse text-gray-500">
-        Loading...
-      </div>
-    );
-  }
-  
+import React from "react";
+
+const Loading = () => {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="w-16 h-16 border-4 border-t-transparent border-green-500 rounded-full animate-spin"></div>
+    </div>
+  );
+};
+
+export default Loading;

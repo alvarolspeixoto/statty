@@ -24,9 +24,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-zinc-100 text-zinc-900`}>
         <Container>
           <Header />
-          <Suspense fallback={<Loading />}>
-            {children}
-          </Suspense>
+          {children}
           <Footer />
         </Container>
       </body>
