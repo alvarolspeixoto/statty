@@ -4,8 +4,6 @@ import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Container from "@/components/container";
-import { Suspense } from "react";
-import Loading from "@/components/loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +22,9 @@ export default function RootLayout({
       <body className={`${inter.className} bg-zinc-100 text-zinc-900`}>
         <Container>
           <Header />
-          {children}
+          <div className="flex-grow">
+            {children}
+          </div>
           <Footer />
         </Container>
       </body>

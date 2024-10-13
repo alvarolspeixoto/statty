@@ -10,9 +10,11 @@ const ProfilePage = async () => {
         return <div>Error: Unable to fetch access token.</div>;
     }
 
-    return <Suspense fallback={<Loading />}>
-        <ProfileClient accessToken={accessToken} />
-    </Suspense>
+    return <div>
+        <Suspense fallback={<Loading />}>
+            <ProfileClient accessToken={accessToken} />
+        </Suspense>
+    </div>
 };
 
 export default ProfilePage;
