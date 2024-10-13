@@ -3,7 +3,7 @@
 import { useState, Suspense } from "react";
 import Loading from "@/components/loading";
 import { fetchSpotifyData } from "@/lib/spotify";
-import Track from "@/components/track";
+import Track, { TrackProps } from "@/components/track";
 
 interface TopTracksClientProps {
     accessToken: string;
@@ -35,7 +35,7 @@ const TopTracksClient = async ({ accessToken, timeRange }: TopTracksClientProps)
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                         {topTracks.items.length > 0 ? (
-                            topTracks.items.map((track: any, index: number) => (
+                            topTracks.items.map((track: TrackProps, index: number) => (
                                 <Track key={track.id} {...track} position={index+1} />
                             ))
                         ) : (

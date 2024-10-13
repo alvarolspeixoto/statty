@@ -4,9 +4,10 @@
 import Image from "next/image";
 import ProfileButton from "./profileButton";
 import Link from "next/link";
+import { ProfileInfo } from "@/app/profile/profileClient";
 
 interface HeaderClientProps {
-  profileData: any;
+  profileData: ProfileInfo;
 }
 
 export default function HeaderClient({ profileData }: HeaderClientProps) {

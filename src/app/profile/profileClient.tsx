@@ -8,26 +8,58 @@ interface ProfileClientProps {
     accessToken: string;
 }
 
-const ProfileClient = async ({ accessToken }: ProfileClientProps) => {
+import { useEffect, useState } from "react";
 
-    let profileInfo;
-    let favoriteArtists;
+export interface Artist {
+    id: string;
+    name: string;
+    images: { url: string }[];
+    external_urls: { spotify: string };
+}
+export interface ProfileInfo {
+    display_name: string;
+    images: { url: string }[];
+    external_urls: { spotify: string };
+}
 
-    try {
-        [profileInfo, favoriteArtists] = await Promise.all([
-            fetchSpotifyProfile(accessToken),
-            fetchSpotifyData('me/top/artists?limit=5&time_range=long_term', accessToken)
-        ]);
-    } catch (error) {
-        console.error('Error fetching data from Spotify:', error);
-        return <div>Error fetching data.</div>;
+const ProfileClient = ({ accessToken }: ProfileClientProps) => {
+
+    const [profileInfo, setProfileInfo] = useState<ProfileInfo | null>(null);
+    const [favoriteArtists, setFavoriteArtists] = useState<Artist[]>([]);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [profile, artists] = await Promise.all([
+                    fetchSpotifyProfile(accessToken),
+                    fetchSpotifyData('me/top/artists?limit=5&time_range=long_term', accessToken)
+                ]);
+                setProfileInfo(profile);
+                setFavoriteArtists(artists.items);
+            } catch (error) {
+                console.error('Error fetching data from Spotify:', error);
+                setError('Error fetching data.');
+            }
+        };
+
+        fetchData();
+    }, [accessToken]);
+
+    if (error) {
+        return <div>{error}</div>;
     }
 
-    let photoURL = profileInfo.images[1].url;
-    let displayName = profileInfo.display_name;
-    let spotifyProfileURI = profileInfo.external_urls.spotify;
+    if (!profileInfo) {
+        return <div>Loading...</div>;
+    }
+
+    const photoURL = profileInfo.images[1].url;
+    const displayName = profileInfo.display_name;
+    const spotifyProfileURI = profileInfo.external_urls.spotify;
+
     return (
-        <div >
+        <div>
             <div className="flex justify-between p-4 bg-gradient-to-r from-white to-gray-300">
                 <div className="flex gap-3 p-4 items-center">
                     <Image
@@ -46,13 +78,12 @@ const ProfileClient = async ({ accessToken }: ProfileClientProps) => {
             <div className="flex flex-col items-center justify-center gap-3 p-4 mt-2">
                 <h2 className="text-3xl font-bold max-w-[500px] text-center">Artistas favoritos</h2>
                 <div className="flex justify-center gap-4">
-                    {favoriteArtists.items.map((artist: any, index: number) => (
+                    {favoriteArtists.map((artist, index) => (
                         <Link key={artist.id} target="_blank" href={artist.external_urls.spotify}>
                             <Item  
-                                position={index+1} 
+                                position={index + 1} 
                                 name={artist.name} 
                                 pictureUrl={artist.images[1].url}
-                                maxSize={200}
                             />
                         </Link>
                     ))}
@@ -60,7 +91,6 @@ const ProfileClient = async ({ accessToken }: ProfileClientProps) => {
             </div>
         </div>
     );
-
 }
 
-export default ProfileClient
+export default ProfileClient;

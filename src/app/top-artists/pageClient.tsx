@@ -5,6 +5,7 @@ import Loading from "@/components/loading";
 import { fetchSpotifyData } from "@/lib/spotify";
 import Link from "next/link";
 import Item from "@/components/item";
+import { Artist } from "../profile/profileClient";
 
 interface PageClientProps {
     accessToken: string;
@@ -17,7 +18,7 @@ const PageClient = async ({ accessToken, timeRange }: PageClientProps ) => {
 
         return (
             <div className="overflow-x-auto w-full flex flex-wrap gap-4 justify-center">
-                {topArtists.items.map((artist: any, index: number) => (
+                {topArtists.items.map((artist: Artist, index: number) => (
                         <Link key={artist.id} target="_blank" href={artist.external_urls.spotify}>
                             <Item  
                                 position={index+1} 
