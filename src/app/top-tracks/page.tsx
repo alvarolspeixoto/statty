@@ -12,7 +12,7 @@ const TopTracksPage = async () => {
 
   return (
     <div className='flex flex-col items-center justify-center gap-3 mt-2'>
-      <h1 className='text-3xl font-bold max-w-[500px]'>Your Top Tracks</h1>
+      <h1 className='text-3xl font-bold max-w-[500px]'>Suas músicas mais ouvidas</h1>
       <Suspense fallback={<Loading />}>
         <TopTracksClient accessToken={accessToken} />
       </Suspense>

@@ -40,11 +40,11 @@ const ProfileClient = async ({ accessToken }: ProfileClientProps) => {
                     <h2 className="text-6xl font-bold max-w-[500px]">{displayName}</h2>
                 </div>
                 <Link target="_blank" className="bg-green-500 shadow-lg shadow-green-500/50 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-colors duration-300 max-h-[40px]" href={spotifyProfileURI}>
-                    See profile on Spotify
+                    Ver perfil no Spotify
                 </Link>
             </div>
             <div className="flex flex-col items-center justify-center gap-3 p-4 mt-2">
-                <h2 className="text-3xl font-bold max-w-[500px] text-center">Favorite Artists</h2>
+                <h2 className="text-3xl font-bold max-w-[500px] text-center">Artistas favoritos</h2>
                 <div className="flex justify-center gap-4">
                     {favoriteArtists.items.map((artist: any, index: number) => (
                         <Link key={artist.id} target="_blank" href={artist.external_urls.spotify}>
@@ -52,6 +52,7 @@ const ProfileClient = async ({ accessToken }: ProfileClientProps) => {
                                 position={index+1} 
                                 name={artist.name} 
                                 pictureUrl={artist.images[1].url}
+                                maxSize={200}
                             />
                         </Link>
                     ))}
